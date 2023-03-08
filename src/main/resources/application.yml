@@ -2,7 +2,12 @@ spring:
   datasource:
     url: jdbc:h2:mem:credit_application_system_db
     username: cami
-    password: 1234
+    password:
+  jpa:
+    show-sql: true
+    hibernate:
+      properties:
+        hibernate.format_sql: true
   h2:
     console:
       enabled: true
