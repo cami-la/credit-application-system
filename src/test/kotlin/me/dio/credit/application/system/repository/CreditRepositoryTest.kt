@@ -1,11 +1,9 @@
-package me.dio.credit.application.system.repostory
+package me.dio.credit.application.system.repository
 
 import me.dio.credit.application.system.entity.Address
 import me.dio.credit.application.system.entity.Credit
 import me.dio.credit.application.system.entity.Customer
-import me.dio.credit.application.system.repository.CreditRepository
 import org.assertj.core.api.Assertions
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
