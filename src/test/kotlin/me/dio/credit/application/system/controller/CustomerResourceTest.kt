@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 import java.math.BigDecimal
+import java.util.Random
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -26,8 +27,10 @@ import java.math.BigDecimal
 class CustomerResourceTest {
   @Autowired
   private lateinit var customerRepository: CustomerRepository
+
   @Autowired
   private lateinit var mockMvc: MockMvc
+
   @Autowired
   private lateinit var objectMapper: ObjectMapper
 
@@ -37,6 +40,7 @@ class CustomerResourceTest {
 
   @BeforeEach
   fun setup() = customerRepository.deleteAll()
+
   @AfterEach
   fun tearDown() = customerRepository.deleteAll()
 
@@ -134,14 +138,51 @@ class CustomerResourceTest {
   }
 
   @Test
-  fun `should not find customer whith invalid id and return 400 status`() {
+  fun `should not find customer with invalid id and return 400 status`() {
     //given
     val invalidId: Long = 2L
     //when
     //then
     mockMvc.perform(
       MockMvcRequestBuilders.get("$URL/$invalidId")
-        .accept(MediaType.APPLICATION_JSON))
+        .accept(MediaType.APPLICATION_JSON)
+    )
+      .andExpect(MockMvcResultMatchers.status().isBadRequest)
+      .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Bad Request! Consult the documentation"))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists())
+      .andExpect(MockMvcResultMatchers.jsonPath("$.status").value(400))
+      .andExpect(
+        MockMvcResultMatchers.jsonPath("$.exception")
+          .value("class me.dio.credit.application.system.exception.BusinessException")
+      )
+      .andExpect(MockMvcResultMatchers.jsonPath("$.details[*]").isNotEmpty)
+      .andDo(MockMvcResultHandlers.print())
+  }
+
+  @Test
+  fun `should delete customer by id and return 204 status`() {
+    //given
+    val customer: Customer = customerRepository.save(builderCustomerDto().toEntity())
+    //when
+    //then
+    mockMvc.perform(
+      MockMvcRequestBuilders.delete("$URL/${customer.id}")
+        .accept(MediaType.APPLICATION_JSON)
+    )
+      .andExpect(MockMvcResultMatchers.status().isNoContent)
+      .andDo(MockMvcResultHandlers.print())
+  }
+
+  @Test
+  fun `should not delete customer by id and return 400 status`() {
+    //given
+    val invalidId: Long = Random().nextLong()
+    //when
+    //then
+    mockMvc.perform(
+      MockMvcRequestBuilders.delete("$URL/${invalidId}")
+        .accept(MediaType.APPLICATION_JSON)
+    )
       .andExpect(MockMvcResultMatchers.status().isBadRequest)
       .andExpect(MockMvcResultMatchers.jsonPath("$.title").value("Bad Request! Consult the documentation"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.timestamp").exists())
