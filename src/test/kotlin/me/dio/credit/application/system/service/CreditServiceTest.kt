@@ -51,8 +51,8 @@ class CreditServiceTest {
     //when
     val actual: Credit = this.creditService.save(credit)
     //then
-    verify { customerService.findById(customerId) }
-    verify { creditRepository.save(credit) }
+    verify(exactly = 1) { customerService.findById(customerId) }
+    verify(exactly = 1) { creditRepository.save(credit) }
 
     Assertions.assertThat(actual).isNotNull
     Assertions.assertThat(actual).isSameAs(credit)
@@ -71,6 +71,23 @@ class CreditServiceTest {
       .hasMessage("Invalid Date")
     //then
     verify(exactly = 0) { creditRepository.save(any()) }
+  }
+
+  @Test
+  fun `should return list of credits for a customer`() {
+    //given
+    val customerId: Long = 1L
+    val expectedCredits: List<Credit> = listOf(buildCredit(), buildCredit(), buildCredit())
+
+    every { creditRepository.findAllByCustomerId(customerId) } returns expectedCredits
+    //when
+    val actual: List<Credit> = creditService.findAllByCustomer(customerId)
+    //then
+    Assertions.assertThat(actual).isNotNull
+    Assertions.assertThat(actual).isNotEmpty
+    Assertions.assertThat(actual).isSameAs(expectedCredits)
+
+    verify(exactly = 1) { creditRepository.findAllByCustomerId(customerId) }
   }
 
 
