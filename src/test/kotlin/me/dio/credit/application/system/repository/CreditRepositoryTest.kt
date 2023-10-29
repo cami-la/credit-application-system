@@ -88,10 +88,7 @@ class CreditRepositoryTest {
     cpf = cpf,
     email = email,
     password = password,
-    address = Address(
-      zipCode = zipCode,
-      street = street,
-    ),
+    address = Address(zipCode = zipCode, street = street),
     income = income,
   )
 

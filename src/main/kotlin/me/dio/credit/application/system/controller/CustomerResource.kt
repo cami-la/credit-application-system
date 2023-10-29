@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/customers")
-class CustomerResource(
-  private val customerService: CustomerService
-) {
+class CustomerResource(private val customerService: CustomerService) {
 
   @PostMapping
   fun saveCustomer(@RequestBody @Valid customerDto: CustomerDto): ResponseEntity<CustomerView> {

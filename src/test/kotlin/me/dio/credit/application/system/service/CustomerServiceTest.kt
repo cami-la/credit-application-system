@@ -22,6 +22,7 @@ import java.util.*
 //@ActiveProfiles("test")
 @ExtendWith(MockKExtension::class)
 class CustomerServiceTest {
+
   @MockK lateinit var customerRepository: CustomerRepository
   @InjectMockKs lateinit var customerService: CustomerService
 
@@ -60,7 +61,8 @@ class CustomerServiceTest {
     every { customerRepository.findById(fakeId) } returns Optional.empty()
     //when
     //then
-    Assertions.assertThatExceptionOfType(BusinessException::class.java)
+    Assertions
+      .assertThatExceptionOfType(BusinessException::class.java)
       .isThrownBy { customerService.findById(fakeId) }
       .withMessage("Id $fakeId not found")
     verify(exactly = 1) { customerRepository.findById(fakeId) }
@@ -98,10 +100,7 @@ class CustomerServiceTest {
       cpf = cpf,
       email = email,
       password = password,
-      address = Address(
-        zipCode = zipCode,
-        street = street,
-      ),
+      address = Address(zipCode = zipCode, street = street),
       income = income,
       id = id
     )

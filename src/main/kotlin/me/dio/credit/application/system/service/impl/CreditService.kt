@@ -16,9 +16,7 @@ class CreditService(
 ) : ICreditService {
   override fun save(credit: Credit): Credit {
     this.validDayFirstInstallment(credit.dayFirstInstallment)
-    credit.apply {
-      customer = customerService.findById(credit.customer?.id!!)
-    }
+    credit.apply {customer = customerService.findById(credit.customer?.id!!)}
     return this.creditRepository.save(credit)
   }
 

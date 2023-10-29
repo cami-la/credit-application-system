@@ -28,9 +28,6 @@ data class CustomerDto(
     income = this.income,
     email = this.email,
     password = this.password,
-    address = Address(
-      zipCode = this.zipCode,
-      street = this.street
-    )
+    address = Address(zipCode = this.zipCode, street = this.street)
   )
 }

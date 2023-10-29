@@ -12,6 +12,7 @@ import java.time.LocalDateTime
 
 @RestControllerAdvice
 class RestExceptionHandler {
+
   @ExceptionHandler(MethodArgumentNotValidException::class)
   fun handlerValidException(ex: MethodArgumentNotValidException): ResponseEntity<ExceptionDetails> {
     val erros: MutableMap<String, String?> = HashMap()
@@ -34,8 +35,7 @@ class RestExceptionHandler {
   @ExceptionHandler(DataAccessException::class)
   fun handlerValidException(ex: DataAccessException): ResponseEntity<ExceptionDetails> {
     return ResponseEntity.status(HttpStatus.CONFLICT)
-      .body(
-        ExceptionDetails(
+      .body(ExceptionDetails(
           title = "Conflict! Consult the documentation",
           timestamp = LocalDateTime.now(),
           status = HttpStatus.CONFLICT.value(),
@@ -56,9 +56,7 @@ class RestExceptionHandler {
 
   @ExceptionHandler(BusinessException::class)
   fun handlerValidException(ex: BusinessException): ResponseEntity<ExceptionDetails> {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-      .body(
-        ExceptionDetails(
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionDetails(
           title = "Bad Request! Consult the documentation",
           timestamp = LocalDateTime.now(),
           status = HttpStatus.BAD_REQUEST.value(),
@@ -70,9 +68,7 @@ class RestExceptionHandler {
 
   @ExceptionHandler(IllegalArgumentException::class)
   fun handlerValidException(ex: IllegalArgumentException): ResponseEntity<ExceptionDetails> {
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-      .body(
-        ExceptionDetails(
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionDetails(
           title = "Bad Request! Consult the documentation",
           timestamp = LocalDateTime.now(),
           status = HttpStatus.BAD_REQUEST.value(),
