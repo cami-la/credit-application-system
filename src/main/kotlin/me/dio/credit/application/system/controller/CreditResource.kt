@@ -14,14 +14,13 @@ import java.util.stream.Collectors
 
 @RestController
 @RequestMapping("/api/credits")
-class CreditResource(
-  private val creditService: CreditService
-) {
+class CreditResource(private val creditService: CreditService) {
 
   @PostMapping
   fun saveCredit(@RequestBody @Valid creditDto: CreditDto): ResponseEntity<String> {
     val credit: Credit = this.creditService.save(creditDto.toEntity())
-    return ResponseEntity.status(HttpStatus.CREATED)
+    return ResponseEntity
+      .status(HttpStatus.CREATED)
       .body("Credit ${credit.creditCode} - Customer ${credit.customer?.email} saved!")
   }
 
@@ -36,10 +35,8 @@ class CreditResource(
   }
 
   @GetMapping("/{creditCode}")
-  fun findByCreditCode(
-    @RequestParam(value = "customerId") customerId: Long,
-    @PathVariable creditCode: UUID
-  ): ResponseEntity<CreditView> {
+  fun findByCreditCode(@RequestParam(value = "customerId") customerId:
+                       Long, @PathVariable creditCode: UUID): ResponseEntity<CreditView> {
     val credit: Credit = this.creditService.findByCreditCode(customerId, creditCode)
     return ResponseEntity.status(HttpStatus.OK).body(CreditView(credit))
   }
