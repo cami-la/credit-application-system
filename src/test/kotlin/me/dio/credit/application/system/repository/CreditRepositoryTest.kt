@@ -53,13 +53,27 @@ class CreditRepositoryTest {
   @Test
   fun `should find all credits by customer id`() {
     //given
-    val customerId: Long =  1L
+    val customerId =  1L
     //when
     val creditList: List<Credit> = creditRepository.findAllByCustomerId(customerId)
     //then
     Assertions.assertThat(creditList).isNotEmpty
     Assertions.assertThat(creditList.size).isEqualTo(2)
     Assertions.assertThat(creditList).contains(credit1, credit2)
+  }
+
+  @Test
+  fun `should find By Id credits by customer id`() {
+    //given
+    val creditCode1 = UUID.fromString("aa547c0f-9a6a-451f-8c89-afddce916a29")
+    credit1.creditCode = creditCode1
+
+    creditRepository.save(credit1)
+    //when
+    val fakeCreditById = creditRepository.findByCreditCode(creditCode1)
+    //then
+    Assertions.assertThat(fakeCreditById).isNotNull
+    Assertions.assertThat(fakeCreditById).isSameAs(credit1)
   }
 
   private fun buildCredit(
