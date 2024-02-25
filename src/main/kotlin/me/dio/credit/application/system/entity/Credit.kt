@@ -1,6 +1,8 @@
 package me.dio.credit.application.system.entity
 
 import jakarta.persistence.*
+import jakarta.validation.Valid
+import jakarta.validation.constraints.Max
 import me.dio.credit.application.system.enummeration.Status
 import java.math.BigDecimal
 import java.time.LocalDate

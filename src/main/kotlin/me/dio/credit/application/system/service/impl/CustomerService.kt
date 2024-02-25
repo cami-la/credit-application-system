@@ -15,6 +15,9 @@ class CustomerService(
   override fun findById(id: Long): Customer = this.customerRepository.findById(id)
     .orElseThrow{throw BusinessException("Id $id not found") }
 
+  override fun findByCpf(cpf: String): Customer = this.customerRepository.findByCustomerCPF(cpf)
+          .orElseThrow{throw BusinessException("CPF $cpf not found") }
+
   override fun delete(id: Long) {
     val customer: Customer = this.findById(id)
     this.customerRepository.delete(customer)

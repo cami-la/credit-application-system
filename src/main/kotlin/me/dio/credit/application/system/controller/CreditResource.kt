@@ -5,7 +5,9 @@ import me.dio.credit.application.system.dto.request.CreditDto
 import me.dio.credit.application.system.dto.response.CreditView
 import me.dio.credit.application.system.dto.response.CreditViewList
 import me.dio.credit.application.system.entity.Credit
+import me.dio.credit.application.system.entity.Customer
 import me.dio.credit.application.system.service.impl.CreditService
+import me.dio.credit.application.system.service.impl.CustomerService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -15,7 +17,8 @@ import java.util.stream.Collectors
 @RestController
 @RequestMapping("/api/credits")
 class CreditResource(
-  private val creditService: CreditService
+  private val creditService: CreditService,
+  private val customerService: CustomerService
 ) {
 
   @PostMapping
@@ -34,6 +37,19 @@ class CreditResource(
       .collect(Collectors.toList())
     return ResponseEntity.status(HttpStatus.OK).body(creditViewList)
   }
+
+  @GetMapping("/cpf")
+  fun findAllByCustomerId(@RequestParam(value = "cpf") cpf: String):
+          ResponseEntity<List<CreditViewList>> {
+    val customer: Customer = this.customerService.findByCpf(cpf)
+    val creditViewList: List<CreditViewList> = this.creditService.findAllByCustomer(customer.id ?: 0L)
+            .stream()
+            .map { credit: Credit -> CreditViewList(credit) }
+            .collect(Collectors.toList())
+    return ResponseEntity.status(HttpStatus.OK).body(creditViewList)
+  }
+
+
 
   @GetMapping("/{creditCode}")
   fun findByCreditCode(

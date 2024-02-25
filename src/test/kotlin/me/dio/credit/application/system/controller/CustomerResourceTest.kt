@@ -70,6 +70,29 @@ class CustomerResourceTest {
   }
 
   @Test
+  fun `should return customer by CPF`() {
+    //given
+    customerRepository.save(builderCustomerDto().toEntity())
+    val customerDto: CustomerDto = builderCustomerDto()
+    val valueAsString: String = objectMapper.writeValueAsString(customerDto)
+    //when
+    //then
+    mockMvc.perform(
+            MockMvcRequestBuilders.get("$URL/cpf/${customerDto.cpf}")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(valueAsString)
+    )
+            .andExpect(MockMvcResultMatchers.status().isOk)
+            .andExpect(MockMvcResultMatchers.jsonPath("$.firstName").value(customerDto.firstName))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.lastName").value(customerDto.lastName))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.cpf").value(customerDto.cpf))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.email").value(customerDto.email))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.income").value(customerDto.income))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.zipCode").value(customerDto.zipCode))
+            .andExpect(MockMvcResultMatchers.jsonPath("$.street").value(customerDto.street))
+            .andDo(MockMvcResultHandlers.print())
+  }
+  @Test
   fun `should not save a customer with same CPF and return 409 status`() {
     //given
     customerRepository.save(builderCustomerDto().toEntity())
@@ -136,7 +159,7 @@ class CustomerResourceTest {
       .andExpect(MockMvcResultMatchers.jsonPath("$.income").value("1000.0"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.zipCode").value("000000"))
       .andExpect(MockMvcResultMatchers.jsonPath("$.street").value("Rua da Cami, 123"))
-      //.andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
+      .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(1))
       .andDo(MockMvcResultHandlers.print())
   }
 

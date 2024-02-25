@@ -22,9 +22,9 @@ class CustomerResource(
     return ResponseEntity.status(HttpStatus.CREATED).body(CustomerView(savedCustomer))
   }
 
-  @GetMapping("/{id}")
-  fun findById(@PathVariable id: Long): ResponseEntity<CustomerView> {
-    val customer: Customer = this.customerService.findById(id)
+  @GetMapping("/cpf/{cpf}")
+  fun findByCpf(@PathVariable cpf: String): ResponseEntity<CustomerView> {
+    val customer: Customer = this.customerService.findByCpf(cpf)
     return ResponseEntity.status(HttpStatus.OK).body(CustomerView(customer))
   }
 
