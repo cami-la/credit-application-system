@@ -39,10 +39,6 @@
 </ol>
 <h6>** Visando facilitar a demostração da aplicação, recomendo instalar apenas o IntelliJ IDEA e executar o projeto através da IDE **</h6>
 
-
-<a href="https://drive.google.com/file/d/1wxwioDHS1sKFPq4G7b24tVZb-XMnoj-l/view?usp=share_link"> 🚀 Collection Sacola API - Postman</a><br>
-
-
 <h3>Autor</h3>
 
 <a href="https://www.linkedin.com/in/cami-la/">
